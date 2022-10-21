@@ -56,7 +56,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.sitemaps',
-    'captcha',
     'account',
     'landpage',
     'registration',
@@ -64,19 +63,26 @@ INSTALLED_APPS = (
     'registrar',
     'student',
     'teacher',
-    'publisher'
+    'ckeditor',
+    'publisher',
+    'theBasis',
+    'embed_video',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'theBasis.middleware.AjaxMiddleware',
 )
+
+#    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+
 
 ROOT_URLCONF = 'academicstoday_project.urls'
 
@@ -96,32 +102,39 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'academicstoday_project.wsgi.application'
+#WSGI_APPLICATION = 'academicstoday_project.wsgi.application'
+#WSGI_APPLICATION = 'wsgi.application'
 
 
 
 # Captcha App
 #
-if 'test' in sys.argv:
-    CAPTCHA_TEST_MODE = True
-CAPTCHA_FONT_SIZE = 52
+# if 'test' in sys.argv:
+#     CAPTCHA_TEST_MODE = True
+# CAPTCHA_FONT_SIZE = 52
 
 
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql_psycopg2",
+#         "NAME": "academicstoday_db",
+#         "USER": SECRET_DB_USER,
+#         "PASSWORD": SECRET_DB_PASSWORD,
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "academicstoday_db",
-        "USER": SECRET_DB_USER,
-        "PASSWORD": SECRET_DB_PASSWORD,
-        "HOST": "localhost",
-        "PORT": "5432",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 
 # Email
@@ -140,9 +153,9 @@ DEFAULT_TO_EMAIL = EMAIL_HOST_USER
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'nl-nl'
 
-TIME_ZONE = 'America/Toronto'
+TIME_ZONE = 'CET'
 
 USE_I18N = True
 
@@ -163,3 +176,4 @@ STATICFILES_DIRS = (
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+

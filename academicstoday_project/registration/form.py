@@ -2,12 +2,12 @@ from datetime import date
 from django.db import models
 from django import forms
 from django.forms import ModelForm, Textarea, TextInput, NumberInput
-from django.forms.extras.widgets import Select, SelectDateWidget
+#from django.forms.extras.widgets import Select, SelectDateWidget
 from django.forms.widgets import EmailInput
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from captcha.fields import CaptchaField
+#from captcha.fields import CaptchaField
 
 
 class RegisterForm(forms.Form):
@@ -57,7 +57,7 @@ class RegisterForm(forms.Form):
     is_18_or_plus = forms.BooleanField(
         required=False
     )
-    captcha = CaptchaField()
+    #captcha = CaptchaField()
 
     # Functions
     #------------

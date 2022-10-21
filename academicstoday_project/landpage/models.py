@@ -58,12 +58,16 @@ class LandpageCoursePreview(models.Model):
     class Meta:
         db_table = 'at_landpage_course_previews'
 
+
 class LandpageTopPickCourse(models.Model):
     id = models.AutoField(primary_key=True)
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.course
+        if self.course:
+            return self.course.title
+        else:
+            return 'Error'
     
     class Meta:
         db_table = 'at_landpage_top_pick_courses'

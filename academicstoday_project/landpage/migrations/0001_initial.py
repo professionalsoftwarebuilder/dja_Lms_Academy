@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
             name='LandpageTopPickCourse',
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True)),
-                ('course', models.ForeignKey(to='registrar.Course')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_landpage_top_pick_courses',

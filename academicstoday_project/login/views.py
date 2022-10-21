@@ -14,7 +14,9 @@ def login_modal(request):
 
 def login_authentication(request):
     response_data = {'status' : 'failure', 'message' : 'an unknown error occured'}
+
     if request.is_ajax():
+    #if request.accepts(request):
         if request.method == 'POST':
             user = authenticate(
                 username=request.POST.get('username').lower(),

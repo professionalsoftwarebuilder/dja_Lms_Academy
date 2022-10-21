@@ -1,4 +1,5 @@
-{% load staticfiles %}
+{% load static %}
+{% load embed_video_tags %}
 <div class="modal fade" id="lecture_modal" role="dialog">
     <div class="modal-dialog" style="width:750px;">
         <div class="modal-content">
@@ -11,11 +12,10 @@
                       action=''
                         name="learnForm">
                 {% if lecture.preferred_service == YOUTUBE_VIDEO_PLAYER %} <!-- YouTube -->
-                        <iframe width="720"
-                               height="480"
-                                  src="{{ lecture.youtube_url }}"
-                          frameborder="0"
-                      allowfullscreen></iframe>
+
+
+                    {% video lecture.url_youtube '426x240' %}
+
                 {% elif lecture.preferred_service == VIMEO_VIDEO_PLAYER %} <!-- Vimeo -->
                         <iframe src="{{ lecture.vimeo_url }}"
                               width="720"

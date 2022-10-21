@@ -50,8 +50,8 @@ class Migration(migrations.Migration):
                 ('total_marks', models.PositiveSmallIntegerField(default=0)),
                 ('submission_date', models.DateTimeField(auto_now=True, null=True)),
                 ('is_finished', models.BooleanField(default=False)),
-                ('assignment', models.ForeignKey(to='registrar.Assignment')),
-                ('student', models.ForeignKey(to='account.Student')),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', on_delete=models.CASCADE)),
+                ('student', models.ForeignKey(to='account.Student', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_assignment_submissions',
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ('status', models.PositiveSmallIntegerField(default=0)),
                 ('image', models.ImageField(upload_to='uploads', null=True)),
                 ('students', models.ManyToManyField(to='account.Student')),
-                ('teacher', models.ForeignKey(to='account.Teacher')),
+                ('teacher', models.ForeignKey(to='account.Teacher', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_courses',
@@ -84,7 +84,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=127)),
                 ('text', models.TextField(blank=True, null=True)),
                 ('date', models.DateTimeField(auto_now=True, null=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_course_discussion_posts',
@@ -97,9 +97,9 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=127)),
                 ('text', models.TextField(blank=True, null=True)),
                 ('date', models.DateTimeField(auto_now=True, null=True)),
-                ('course', models.ForeignKey(to='registrar.Course')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
                 ('posts', models.ManyToManyField(to='registrar.CourseDiscussionPost')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_course_discussion_threads',
@@ -111,8 +111,8 @@ class Migration(migrations.Migration):
                 ('credit_id', models.AutoField(serialize=False, primary_key=True)),
                 ('percent', models.FloatField(default=0, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
                 ('is_public', models.BooleanField(default=False)),
-                ('course', models.ForeignKey(to='registrar.Course')),
-                ('student', models.ForeignKey(to='account.Student')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
+                ('student', models.ForeignKey(to='account.Student', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_course_final_marks',
@@ -124,7 +124,7 @@ class Migration(migrations.Migration):
                 ('settings_id', models.AutoField(serialize=False, primary_key=True)),
                 ('final_exam_percent', models.FloatField(default=50, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
                 ('course_percent', models.FloatField(default=50, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)])),
-                ('course', models.ForeignKey(to='registrar.Course')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_course_settings',
@@ -139,7 +139,7 @@ class Migration(migrations.Migration):
                 ('from_reviewer', models.TextField(null=True)),
                 ('review_date', models.DateField(auto_now=True, null=True)),
                 ('submission_date', models.DateField(auto_now=True, null=True)),
-                ('course', models.ForeignKey(to='registrar.Course')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_course_submissions',
@@ -153,7 +153,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(default='', max_length=31)),
                 ('description', models.TextField(default='')),
                 ('marks', models.PositiveSmallIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)])),
-                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_essay_questions',
@@ -166,7 +166,7 @@ class Migration(migrations.Migration):
                 ('file', models.FileField(upload_to='uploads')),
                 ('submission_date', models.DateTimeField(auto_now=True, null=True)),
                 ('marks', models.FloatField(default=0, validators=[django.core.validators.MinValueValidator(0)])),
-                ('question', models.ForeignKey(to='registrar.EssayQuestion')),
+                ('question', models.ForeignKey(to='registrar.EssayQuestion', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_essay_submissions',
@@ -183,7 +183,7 @@ class Migration(migrations.Migration):
                 ('due_date', models.DateField(null=True)),
                 ('worth', models.PositiveSmallIntegerField(default=0, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)], choices=[(0, '0 %'), (10, '10 %'), (15, '15 %'), (20, '20 %'), (25, '25 %'), (30, '30 %'), (35, '35 %'), (40, '40 %'), (45, '45 %'), (50, '50 %'), (55, '55 %'), (60, '60 %'), (65, '65 %'), (70, '70 %'), (75, '75 %'), (80, '80 %'), (85, '85 %'), (90, '90 %'), (95, '95 %'), (100, '100 %')])),
                 ('is_final', models.BooleanField(default=False)),
-                ('course', models.ForeignKey(to='registrar.Course')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_exams',
@@ -198,8 +198,8 @@ class Migration(migrations.Migration):
                 ('total_marks', models.PositiveSmallIntegerField(default=0)),
                 ('submission_date', models.DateField(auto_now=True, null=True)),
                 ('is_finished', models.BooleanField(default=False)),
-                ('exam', models.ForeignKey(to='registrar.Exam')),
-                ('student', models.ForeignKey(to='account.Student')),
+                ('exam', models.ForeignKey(to='registrar.Exam', on_delete=models.CASCADE)),
+                ('student', models.ForeignKey(to='account.Student', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_exam_submissions',
@@ -214,7 +214,7 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(null=True)),
                 ('upload_date', models.DateField(auto_now=True, null=True)),
                 ('file', models.FileField(upload_to='uploads', null=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_file_uploads',
@@ -232,7 +232,7 @@ class Migration(migrations.Migration):
                 ('vimeo_url', models.URLField(blank=True, null=True)),
                 ('bliptv_url', models.URLField(blank=True, null=True)),
                 ('preferred_service', models.CharField(default='1', max_length=1, choices=[('1', 'YouTube'), ('2', 'Vimeo')])),
-                ('course', models.ForeignKey(to='registrar.Course')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
                 ('notes', models.ManyToManyField(to='registrar.FileUpload')),
             ],
             options={
@@ -259,8 +259,8 @@ class Migration(migrations.Migration):
                 ('f', models.CharField(blank=True, max_length=255, null=True)),
                 ('f_is_correct', models.BooleanField(default=False)),
                 ('marks', models.PositiveSmallIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)])),
-                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
-                ('exam', models.ForeignKey(to='registrar.Exam', null=True)),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True, on_delete=models.CASCADE)),
+                ('exam', models.ForeignKey(to='registrar.Exam', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_multiple_choice_questions',
@@ -278,8 +278,8 @@ class Migration(migrations.Migration):
                 ('f', models.BooleanField(default=False)),
                 ('marks', models.FloatField(default=0, validators=[django.core.validators.MinValueValidator(0)])),
                 ('submission_date', models.DateTimeField(auto_now=True, null=True)),
-                ('question', models.ForeignKey(to='registrar.MultipleChoiceQuestion')),
-                ('student', models.ForeignKey(to='account.Student')),
+                ('question', models.ForeignKey(to='registrar.MultipleChoiceQuestion', on_delete=models.CASCADE)),
+                ('student', models.ForeignKey(to='account.Student', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_multiple_choice_submissions',
@@ -292,7 +292,7 @@ class Migration(migrations.Migration):
                 ('marks', models.PositiveSmallIntegerField(default=0, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5)], choices=[(0, '0 Star'), (1, '1 Star'), (2, '2 Stars'), (3, '3 Stars'), (4, '4 Stars'), (5, '5 Stars')])),
                 ('text', models.TextField(blank=True, null=True)),
                 ('date', models.DateTimeField(auto_now=True, null=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_peer_reviews',
@@ -303,7 +303,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('policy_id', models.AutoField(serialize=False, primary_key=True)),
                 ('file', models.FileField(upload_to='uploads', null=True)),
-                ('course', models.ForeignKey(to='registrar.Course')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_policys',
@@ -319,7 +319,7 @@ class Migration(migrations.Migration):
                 ('start_date', models.DateField(null=True)),
                 ('due_date', models.DateField(null=True)),
                 ('worth', models.PositiveSmallIntegerField(default=0, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)], choices=[(0, '0 %'), (10, '10 %'), (15, '15 %'), (20, '20 %'), (25, '25 %'), (30, '30 %'), (35, '35 %'), (40, '40 %'), (45, '45 %'), (50, '50 %'), (55, '55 %'), (60, '60 %'), (65, '65 %'), (70, '70 %'), (75, '75 %'), (80, '80 %'), (85, '85 %'), (90, '90 %'), (95, '95 %'), (100, '100 %')])),
-                ('course', models.ForeignKey(to='registrar.Course')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_quizzes',
@@ -334,8 +334,8 @@ class Migration(migrations.Migration):
                 ('total_marks', models.PositiveSmallIntegerField(default=0)),
                 ('submission_date', models.DateField(auto_now=True, null=True)),
                 ('is_finished', models.BooleanField(default=False)),
-                ('quiz', models.ForeignKey(to='registrar.Quiz')),
-                ('student', models.ForeignKey(to='account.Student')),
+                ('quiz', models.ForeignKey(to='registrar.Quiz', on_delete=models.CASCADE)),
+                ('student', models.ForeignKey(to='account.Student', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_quiz_submissions',
@@ -350,9 +350,9 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(default='')),
                 ('answer', models.TextField(default='')),
                 ('marks', models.PositiveSmallIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)])),
-                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
-                ('exam', models.ForeignKey(to='registrar.Exam', null=True)),
-                ('quiz', models.ForeignKey(to='registrar.Quiz', null=True)),
+                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True, on_delete=models.CASCADE)),
+                ('exam', models.ForeignKey(to='registrar.Exam', null=True, on_delete=models.CASCADE)),
+                ('quiz', models.ForeignKey(to='registrar.Quiz', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_response_questions',
@@ -365,9 +365,9 @@ class Migration(migrations.Migration):
                 ('answer', models.TextField(default='')),
                 ('marks', models.FloatField(default=0, validators=[django.core.validators.MinValueValidator(0)])),
                 ('submission_date', models.DateTimeField(auto_now=True, null=True)),
-                ('question', models.ForeignKey(to='registrar.ResponseQuestion')),
+                ('question', models.ForeignKey(to='registrar.ResponseQuestion', on_delete=models.CASCADE)),
                 ('reviews', models.ManyToManyField(to='registrar.PeerReview')),
-                ('student', models.ForeignKey(to='account.Student')),
+                ('student', models.ForeignKey(to='account.Student', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_response_submissions',
@@ -378,7 +378,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('syllabus_id', models.AutoField(serialize=False, primary_key=True)),
                 ('file', models.FileField(upload_to='uploads', null=True)),
-                ('course', models.ForeignKey(to='registrar.Course')),
+                ('course', models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_syllabus',
@@ -395,9 +395,9 @@ class Migration(migrations.Migration):
                 ('false_choice', models.CharField(max_length=127, null=True)),
                 ('answer', models.BooleanField(default=False)),
                 ('marks', models.PositiveSmallIntegerField(default=1, validators=[django.core.validators.MinValueValidator(1)])),
-                ('assignment', models.ForeignKey(to='registrar.Assignment', null=True)),
-                ('exam', models.ForeignKey(to='registrar.Exam', null=True)),
-                ('quiz', models.ForeignKey(to='registrar.Quiz', null=True)),
+                ('assignment', models.ForeignKey(on_delete=models.CASCADE, to='registrar.Assignment', null=True)),
+                ('exam', models.ForeignKey(to='registrar.Exam', null=True, on_delete=models.CASCADE)),
+                ('quiz', models.ForeignKey(to='registrar.Quiz', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_true_false_questions',
@@ -410,8 +410,8 @@ class Migration(migrations.Migration):
                 ('answer', models.BooleanField(default=False)),
                 ('submission_date', models.DateTimeField(auto_now=True, null=True)),
                 ('marks', models.FloatField(default=0, validators=[django.core.validators.MinValueValidator(0)])),
-                ('question', models.ForeignKey(to='registrar.TrueFalseQuestion')),
-                ('student', models.ForeignKey(to='account.Student')),
+                ('question', models.ForeignKey(to='registrar.TrueFalseQuestion', on_delete=models.CASCADE)),
+                ('student', models.ForeignKey(to='account.Student', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_true_false_submissions',
@@ -420,7 +420,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='multiplechoicequestion',
             name='quiz',
-            field=models.ForeignKey(to='registrar.Quiz', null=True),
+            field=models.ForeignKey(to='registrar.Quiz', null=True, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='essaysubmission',
@@ -430,26 +430,26 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='essaysubmission',
             name='student',
-            field=models.ForeignKey(to='account.Student'),
+            field=models.ForeignKey(to='account.Student', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='essayquestion',
             name='exam',
-            field=models.ForeignKey(to='registrar.Exam', null=True),
+            field=models.ForeignKey(to='registrar.Exam', null=True, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='essayquestion',
             name='quiz',
-            field=models.ForeignKey(to='registrar.Quiz', null=True),
+            field=models.ForeignKey(to='registrar.Quiz', null=True, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='assignment',
             name='course',
-            field=models.ForeignKey(to='registrar.Course'),
+            field=models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='announcement',
             name='course',
-            field=models.ForeignKey(to='registrar.Course'),
+            field=models.ForeignKey(to='registrar.Course', on_delete=models.CASCADE),
         ),
     ]

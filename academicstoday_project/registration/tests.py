@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import json
 from . import views
-from captcha.models import CaptchaStore
+#from captcha.models import CaptchaStore
 
 # Contants
 TEST_USER_EMAIL = "ledo@gah.com"
@@ -24,8 +24,9 @@ class RegistrationTestCase(TestCase):
         User.objects.all().delete()
     
     def setUp(self):
-        captcha_count = CaptchaStore.objects.count()
-        self.failUnlessEqual(captcha_count, 0)
+        #captcha_count = CaptchaStore.objects.count()
+        #self.failUnlessEqual(captcha_count, 0)
+        pass
 
     def test_url_resolves_to_register(self):
         found = resolve('/register')

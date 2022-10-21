@@ -2,16 +2,16 @@ from datetime import date
 from django.db import models
 from django import forms
 from django.forms import ModelForm, Textarea, TextInput, NumberInput
-from django.forms.extras.widgets import Select, SelectDateWidget
+#from django.forms.extras.widgets import Select, SelectDateWidget
 from django.forms.widgets import EmailInput
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from captcha.fields import CaptchaField
-from landpage.models import LandpageContactMessage
+#from captcha.fields import CaptchaField
+from .models import LandpageContactMessage
 
 
 class ContactForm(forms.ModelForm):
-    captcha = CaptchaField()
+    #captcha = CaptchaField()
     class Meta:
         model = LandpageContactMessage
         fields = ['name','email', 'phone', 'message']
@@ -46,7 +46,7 @@ class ForgotPasswordForm(forms.Form):
         max_length=100,
         widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Enter Email'}),
     )
-    captcha = CaptchaField()
+    #captcha = CaptchaField()
 
 
 # Captcha Setup:

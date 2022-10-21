@@ -25,12 +25,12 @@ def syllabus_page(request, course_id):
         syllabus = Syllabus.objects.get(course=course)
     except Syllabus.DoesNotExist:
         syllabus = None
-    return render(request, 'course/syllabus/view.html',{
-        'course' : course,
-        'syllabus' : syllabus,
-        'user' : request.user,
-        'tab' : 'syllabus',
+    return render(request, 'course/syllabus/view.html', {
+        'course': course,
+        'syllabus': syllabus,
+        'user': request.user,
+        'tab': 'syllabus',
         'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
-        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
-        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
+        'local_css_urls': settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls': settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })

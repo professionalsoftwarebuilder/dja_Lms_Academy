@@ -5,6 +5,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 import os
 from account.models import Student
 from account.models import Teacher
+from embed_video.fields import EmbedVideoField
+
 
 WORTH_PERCENT_CHOICES = (
     (0, '0 %'),
@@ -109,7 +111,7 @@ class FileUpload(models.Model):
     description = models.TextField(null=True)
     upload_date = models.DateField(auto_now= True, null=True)
     file = models.FileField(upload_to='uploads', null=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def delete(self, *args, **kwargs):
         """
@@ -131,6 +133,14 @@ class FileUpload(models.Model):
 
 
 class Course(models.Model):
+
+    class StatusChoices(models.IntegerChoices):
+        UNAVAILABLE = 0
+        AVAILABLE = 1
+        SUBMITTED_FOR_REVIEW = 2
+        IN_REVIEW = 3
+        REJECTED = 4
+
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=127)
     sub_title = models.CharField(max_length=127)
@@ -139,10 +149,10 @@ class Course(models.Model):
     start_date = models.DateField(null=True)
     finish_date = models.DateField(null=True)
     is_official = models.BooleanField(default=False)
-    status = models.PositiveSmallIntegerField(default=settings.COURSE_UNAVAILABLE_STATUS)
+    status = models.PositiveSmallIntegerField(default=settings.COURSE_UNAVAILABLE_STATUS, choices=StatusChoices.choices)
     image = models.ImageField(upload_to='uploads', null=True, blank=True)
     students = models.ManyToManyField(Student)
-    teacher = models.ForeignKey(Teacher)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
 
     def delete(self, *args, **kwargs):
         if self.image:
@@ -164,7 +174,7 @@ class CourseSubmission(models.Model):
     from_reviewer = models.TextField(null=True)
     review_date = models.DateField(auto_now=True, null=True)
     submission_date = models.DateField(auto_now=True, null=True)
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.review_date) + ' ' + str(self.course)
@@ -175,7 +185,7 @@ class CourseSubmission(models.Model):
 
 class CourseSetting(models.Model):
     settings_id = models.AutoField(primary_key=True)
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     final_exam_percent = models.FloatField(
         validators=[MinValueValidator(0), MaxValueValidator(100)],
         default=50
@@ -199,8 +209,8 @@ class CourseFinalMark(models.Model):
         default=0
     )
     is_public = models.BooleanField(default=False)
-    course = models.ForeignKey(Course)
-    student = models.ForeignKey(Student)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
         
     def __str__(self):
         return str(self.student) + " " + str(self.course) + " " + str(self.percent) + "%"
@@ -214,7 +224,7 @@ class Announcement(models.Model):
     title = models.CharField(max_length=31)
     body = models.TextField()
     post_date = models.DateField(auto_now_add=True, null=True)
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     
     @classmethod
     def create(cls, course_id, title, body, post_date):
@@ -231,8 +241,8 @@ class Announcement(models.Model):
 
 class Syllabus(models.Model):
     syllabus_id = models.AutoField(primary_key=True)
-    file = models.FileField(upload_to='uploads',null=True)
-    course = models.ForeignKey(Course)
+    file = models.FileField(upload_to='uploads', null=True, help_text='Bedoeld voor PDF format')
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, help_text='Cursus waarvoor deze syllabus bestemd is')
 
     def delete(self, *args, **kwargs):
         if self.file:
@@ -250,7 +260,7 @@ class Syllabus(models.Model):
 class Policy(models.Model):
     policy_id = models.AutoField(primary_key=True)
     file = models.FileField(upload_to='uploads',null=True)
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def delete(self, *args, **kwargs):
         if self.file:
@@ -278,6 +288,7 @@ class Lecture(models.Model):
     title = models.CharField(max_length=63, default='', null=True)
     description = models.TextField(default='', null=True)
     youtube_url = models.URLField(null=True, blank=True)
+    url_youtube = EmbedVideoField(null=True, blank=True)
     vimeo_url = models.URLField(null=True, blank=True)
     bliptv_url = models.URLField(null=True, blank=True)
     VIDEO_PLAYER_CHOICES = (
@@ -289,7 +300,7 @@ class Lecture(models.Model):
         choices=VIDEO_PLAYER_CHOICES,
         default=settings.YOUTUBE_VIDEO_PLAYER
     )
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     notes = models.ManyToManyField(FileUpload)
 
     def delete(self, *args, **kwargs):
@@ -320,7 +331,7 @@ class Exam(models.Model):
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
     is_final = models.BooleanField(default=False)
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.exam_num) + ' ' + self.title + ' ' + self.description;
@@ -336,8 +347,8 @@ class ExamSubmission(models.Model):
     total_marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(auto_now=True, null=True)
     is_finished = models.BooleanField(default=False)
-    student = models.ForeignKey(Student)
-    exam = models.ForeignKey(Exam)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.submission_id) + ' ' + str(self.percent) + '% ' + \
@@ -362,7 +373,7 @@ class Quiz(models.Model):
         choices=WORTH_PERCENT_CHOICES,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.quiz_id) + ' ' + self.title + ' ' + str(self.worth);
@@ -378,8 +389,8 @@ class QuizSubmission(models.Model):
     total_marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateField(auto_now=True, null=True)
     is_finished = models.BooleanField(default=False)
-    student = models.ForeignKey(Student)
-    quiz = models.ForeignKey(Quiz)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.submission_id) + ' ' + str(self.percent) + '%'
@@ -403,7 +414,7 @@ class Assignment(models.Model):
         choices=WORTH_PERCENT_CHOICES,
         validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.assignment_id) + ' ' + self.title;
@@ -419,8 +430,8 @@ class AssignmentSubmission(models.Model):
     total_marks = models.PositiveSmallIntegerField(default=0)
     submission_date = models.DateTimeField(auto_now=True, null=True)
     is_finished = models.BooleanField(default=False)
-    student = models.ForeignKey(Student)
-    assignment = models.ForeignKey(Assignment)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.submission_id) + ' ' + str(self.percent) + '%';
@@ -442,9 +453,9 @@ class EssayQuestion(models.Model):
         default=1
     )
     question_type = settings.ESSAY_QUESTION_TYPE
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
+    assignment = models.ForeignKey(Assignment, null=True, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.question_id) + ' ' + self.title + ' ' + self.description;
@@ -454,7 +465,7 @@ class EssayQuestion(models.Model):
 
 
 class PeerReview(models.Model):
-    review_id = models.AutoField(max_length=11, primary_key=True)
+    review_id = models.AutoField(primary_key=True)
     MARK_CHOICES = (
         (0, '0 Star'),
         (1, '1 Star'),
@@ -470,7 +481,7 @@ class PeerReview(models.Model):
     )
     text = models.TextField(null=True, blank=True)
     date = models.DateTimeField(auto_now=True, null=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
                           
     def __str__(self):
         return str(self.review_id) + ' ' + self.text;
@@ -487,8 +498,8 @@ class EssaySubmission(models.Model):
         validators=[MinValueValidator(0)],
         default=0
     )
-    student = models.ForeignKey(Student)
-    question = models.ForeignKey(EssayQuestion)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    question = models.ForeignKey(EssayQuestion, on_delete=models.CASCADE)
     reviews = models.ManyToManyField(PeerReview)
     
     def delete(self, *args, **kwargs):
@@ -532,9 +543,9 @@ class MultipleChoiceQuestion(models.Model):
         default=1,
     )
     question_type = settings.MULTIPLECHOICE_QUESTION_TYPE
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
+    assignment = models.ForeignKey(Assignment, null=True, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.question_id) + ' ' + self.title + ' ' + self.description;
@@ -555,8 +566,8 @@ class MultipleChoiceSubmission(models.Model):
         default=0,
     )
     submission_date = models.DateTimeField(auto_now=True, null=True)
-    student = models.ForeignKey(Student)
-    question = models.ForeignKey(MultipleChoiceQuestion)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    question = models.ForeignKey(MultipleChoiceQuestion, on_delete=models.CASCADE)
   
     @classmethod
     def create(cls, assignment_id, exam_id, course_id, student_id, question_num):
@@ -590,9 +601,9 @@ class TrueFalseQuestion(models.Model):
         default=1
     )
     question_type = settings.TRUEFALSE_QUESTION_TYPE
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
+    assignment = models.ForeignKey(Assignment, null=True, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.question_num) + ' ' + self.title + ' ' + self.description
@@ -610,8 +621,8 @@ class TrueFalseSubmission(models.Model):
         validators=[MinValueValidator(0)],
         default=0,
     )
-    student = models.ForeignKey(Student)
-    question = models.ForeignKey(TrueFalseQuestion)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    question = models.ForeignKey(TrueFalseQuestion, on_delete=models.CASCADE)
     
     def __str__(self):
         return str(self.submission_id) + ' ' + self.question + ' By ' + self.student
@@ -634,9 +645,9 @@ class ResponseQuestion(models.Model):
         default=1
     )
     question_type = settings.RESPONSE_QUESTION_TYPE
-    assignment = models.ForeignKey(Assignment, null=True)
-    quiz = models.ForeignKey(Quiz, null=True)
-    exam = models.ForeignKey(Exam, null=True)
+    assignment = models.ForeignKey(Assignment, null=True, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.question_id) + ' ' + self.title + ' ' + self.description;
@@ -653,8 +664,8 @@ class ResponseSubmission(models.Model):
         default=0
     )
     submission_date = models.DateTimeField(auto_now=True, null=True)
-    student = models.ForeignKey(Student)
-    question = models.ForeignKey(ResponseQuestion)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    question = models.ForeignKey(ResponseQuestion, on_delete=models.CASCADE)
     reviews = models.ManyToManyField(PeerReview)
 
     def delete(self, *args, **kwargs):
@@ -674,7 +685,7 @@ class CourseDiscussionPost(models.Model):
     title = models.CharField(max_length=127)
     text = models.TextField(null=True, blank=True)
     date = models.DateTimeField(auto_now=True, null=True)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.title + ' ' + self.text;
@@ -688,8 +699,8 @@ class CourseDiscussionThread(models.Model):
     title = models.CharField(max_length=127)
     text = models.TextField(null=True, blank=True)
     date = models.DateTimeField(auto_now=True, null=True)
-    course = models.ForeignKey(Course)
-    user = models.ForeignKey(User)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     posts = models.ManyToManyField(CourseDiscussionPost)
                     
     def __str__(self):

@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
             name='Student',
             fields=[
                 ('student_id', models.AutoField(serialize=False, primary_key=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_students',
@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             name='Teacher',
             fields=[
                 ('teacher_id', models.AutoField(serialize=False, primary_key=True)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'at_teachers',
