@@ -170,9 +170,18 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "media"),
+    os.path.join(BASE_DIR, "static_hub"),
+    os.path.join(BASE_DIR, "media_hub"),
 )
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

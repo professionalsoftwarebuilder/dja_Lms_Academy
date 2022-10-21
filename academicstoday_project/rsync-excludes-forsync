@@ -1,6 +1,7 @@
 media/
 static/
 db.sqlite3
+#migrations/
 prepopulated.db
 #__init__.py
 #.env
