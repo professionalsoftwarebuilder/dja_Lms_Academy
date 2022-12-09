@@ -1,0 +1,7 @@
+Django
+django-ranged-response
+django-simple-captcha
+gunicorn
+Pillow
+psycopg2-binary
+six

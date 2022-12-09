@@ -13,7 +13,7 @@ from registrar.models import Quiz
 from registrar.models import TrueFalseQuestion
 from teacher.forms import QuizForm
 from teacher.forms import QuizQuestionTypeForm
-from teacher.forms import TrueFalseQuestionForm
+from teacher.forms import TrueFalseQuestionForm, MultipleChoiceQuestion
 
 
 @login_required(login_url='/landpage')
@@ -146,11 +146,17 @@ def questions_table(request, course_id, quiz_id):
     except TrueFalseQuestion.DoesNotExist:
         tf_questions = None
 
+    try:
+        mc_questions = MultipleChoiceQuestion.objects.filter(quiz=quiz).order_by('question_num')
+    except MultipleChoiceQuestion.DoesNotExist:
+        mc_questions = None
+
     return render(request, 'teacher/quiz/question_table.html',{
         'teacher' : teacher,
         'course' : course,
         'quiz' : quiz,
-        'tf_questions' : tf_questions,
+        'tf_questions': tf_questions,
+        'mc_questions': mc_questions,
         'ESSAY_QUESTION_TYPE': settings.ESSAY_QUESTION_TYPE,
         'MULTIPLECHOICE_QUESTION_TYPE': settings.MULTIPLECHOICE_QUESTION_TYPE,
         'TRUEFALSE_QUESTION_TYPE': settings.TRUEFALSE_QUESTION_TYPE,

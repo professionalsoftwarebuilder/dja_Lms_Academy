@@ -40,7 +40,7 @@ urlpatterns = [
     path('course/<course_id>/delete_assignment', assignment.delete_assignment),
                        
     # Assignment
-    path('course/<course_id>/assignment/(\d+)', assignment.assignment_page),
+    path('course/<course_id>/assignment/<assignment_id>', assignment.assignment_page),
     path('course/<course_id>/assignment/(\d+)/submit_assignment', assignment.submit_assignment),
     path('course/<course_id>/assignment/(\d+)/submit_e_assignment_answer', assignment.submit_e_assignment_answer),
     path('course/<course_id>/assignment/(\d+)/submit_mc_assignment_answer', assignment.submit_mc_assignment_answer),

@@ -30,6 +30,7 @@ scrpt-rsync-backup.txt
 .idea/
 .kdev4/
 .gitignore
+.git/
 opruim/
 Resources/
 .project

@@ -543,9 +543,10 @@ class MultipleChoiceQuestion(models.Model):
         default=1,
     )
     question_type = settings.MULTIPLECHOICE_QUESTION_TYPE
-    assignment = models.ForeignKey(Assignment, null=True, on_delete=models.CASCADE)
-    quiz = models.ForeignKey(Quiz, null=True, on_delete=models.CASCADE)
-    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
+    #$# 010 chg 3 (added: blank=True)
+    assignment = models.ForeignKey(Assignment, blank=True, null=True, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, blank=True, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.question_id) + ' ' + self.title + ' ' + self.description;
@@ -601,9 +602,10 @@ class TrueFalseQuestion(models.Model):
         default=1
     )
     question_type = settings.TRUEFALSE_QUESTION_TYPE
-    assignment = models.ForeignKey(Assignment, null=True, on_delete=models.CASCADE)
-    quiz = models.ForeignKey(Quiz, null=True, on_delete=models.CASCADE)
-    exam = models.ForeignKey(Exam, null=True, on_delete=models.CASCADE)
+    #$# 010 chg 3 (added: blank=True)
+    assignment = models.ForeignKey(Assignment, blank=True, null=True, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, blank=True, null=True, on_delete=models.CASCADE)
+    exam = models.ForeignKey(Exam, blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.question_num) + ' ' + self.title + ' ' + self.description

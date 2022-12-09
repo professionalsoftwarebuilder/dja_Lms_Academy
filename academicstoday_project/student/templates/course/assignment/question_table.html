@@ -74,7 +74,7 @@
                 <h3 class="panel-title">Assignment #{{ assignment.assignment_num }}: {{ assignment.title }}</h3>
             </div>
             <div class="panel-body">
-                <p>{{ assignment.description }}</p>
+                <p>{{ assignment.description|safe }}</p>
                 <p>Due: {{ assignment.due_date }}</p>
                 <p>
                     <button onclick="ajax_submit_assignment();"
