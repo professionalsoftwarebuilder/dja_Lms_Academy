@@ -132,6 +132,14 @@ class FileUpload(models.Model):
         db_table = 'at_file_uploads'
 
 
+# Learning module belonging to one or ceveral courses
+class Module(models.Model):
+    title = models.CharField('Title', max_length=85, blank=False, null=True)
+
+    def __str__(self):
+        return self.title
+
+
 class Course(models.Model):
 
     class StatusChoices(models.IntegerChoices):
@@ -153,6 +161,7 @@ class Course(models.Model):
     image = models.ImageField(upload_to='uploads', null=True, blank=True)
     students = models.ManyToManyField(Student)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    modules = models.ManyToManyField(Module, through='TstCourseModule')
 
     def delete(self, *args, **kwargs):
         if self.image:
@@ -165,6 +174,14 @@ class Course(models.Model):
 
     class Meta:
         db_table = 'at_courses'
+
+
+# Junction table between Course and module
+class TstCourseModule(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='course_modules')
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='module_courses')
+    volgnr = models.IntegerField('Serial number', blank=True, null=True, default=1, help_text='Sequece of module in Course')
+    section = models.CharField('Section', max_length=45, blank=True, null=True, default='pargr.', help_text='Section (number) of module in course')
 
 
 class CourseSubmission(models.Model):
@@ -715,3 +732,4 @@ class CourseDiscussionThread(models.Model):
         for post in self.posts.all():
             post.delete()
         super(CourseDiscussionThread, self).delete(*args, **kwargs)
+

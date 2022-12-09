@@ -15,6 +15,8 @@ from student.views import discussion
 from student.views import peer_review
 from student.views import credit
 
+app_name = 'student'
+
 urlpatterns = [
     # Announcement
     path('course/<course_id>/announcements/', announcement.announcements_page),
@@ -29,7 +31,12 @@ urlpatterns = [
     # Lecture
     path('course/<course_id>/lectures', lecture.lectures_page),
     path('course/<course_id>/lecture', lecture.lecture),
-                       
+
+    #$# 010 add 2
+    # Module
+    path('course/<course_id>/modules', lecture.modules_page, name='modules'),
+    path('course/<module_id>/<course_id>/module', lecture.module, name='module'),
+
     # Lecture Notes
     path('course/<course_id>/lecture/(\d+)/notes', lecture_note.lecture_notes_page),
     path('course/<course_id>/lecture/(\d+)/view_lecture_note', lecture_note.view_lecture_note),

@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import sys
+from decouple import config, Csv
 
 # Import variables for our application. Basically all imported variables
 # have a SECRET_* prefix.
@@ -33,12 +34,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = SECRET_SECRET_KEY
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = SECRET_DEBUG
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = SECRET_ALLOWED_HOSTS
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', cast=Csv())
 
 # 'Sites Framework' requires this line.
 SITE_ID = 1

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from registrar.models import Course
+from registrar.models import Course, Module, TstCourseModule
 from registrar.models import Lecture
 import json
 import datetime
@@ -38,6 +38,47 @@ def lectures_page(request, course_id):
         'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
+
+
+@login_required(login_url='/landpage')
+def modules_page(request, course_id):
+    course = Course.objects.get(id=course_id)
+    try:
+        modules = Module.objects.filter(module_courses__course_id=course_id).order_by('module_courses__volgnr')
+    except Module.DoesNotExist:
+        modules = None
+    return render(request, 'course/module/table.html',{
+        'course' : course,
+        'modules' : modules,
+        'user' : request.user,
+        'tab' : 'modules',
+        'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
+        'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+        'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
+    })
+
+
+@login_required(login_url='/landpage')
+def module(request, module_id, course_id):
+    response_data = {}
+    course = Course.objects.get(id=course_id)
+
+    if request.method == 'GET':
+        print('in get, ' + str(module_id))
+        try:
+            module = Module.objects.get(pk=module_id)
+            moduleinfo = module.module_courses.get(course=course_id)
+        except Module.DoesNotExist:
+            module = None
+        return render(request, 'course/module/details.html',{
+            'course': course,
+            'module': module,
+            'user': request.user,
+            'moduleinfo': moduleinfo,
+            'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,
+            'local_css_urls' : settings.SB_ADMIN_2_CSS_LIBRARY_URLS,
+            'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
+        })
 
 
 @login_required(login_url='/landpage')
