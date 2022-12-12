@@ -59,22 +59,36 @@ def modules_page(request, course_id):
 
 
 @login_required(login_url='/landpage')
-def module(request, module_id, course_id):
-    response_data = {}
+def module(request, module_id, course_id, unit_id):
+    if unit_id == None:
+        #unit_id =
+        pass
+
     course = Course.objects.get(id=course_id)
 
     if request.method == 'GET':
-        print('in get, ' + str(module_id))
+        #print('in get, ' + str(module_id))
         try:
             module = Module.objects.get(pk=module_id)
-            units = module.module_units.get(course=course_id)
-            moduleinfo = module.module_courses.get(course=course_id)
+            #units = module.module_units.filter(module=module_id)
+            units = module.learningunits
+
+            if unit_id == '0':
+                activeunit = units.first()
+            else:
+                activeunit = LearningUnit.objects.get(id=unit_id)
+
+            print(units.count)
+            # Hier first omdat je twee keer dezelfde module aan een cursus kunt hangen wat niet de bedoeling is
+            moduleinfo = module.module_courses.filter(course=course_id).first()
+
         except Module.DoesNotExist:
             module = None
         return render(request, 'course/module/details.html',{
             'course': course,
             'module': module,
             'units': units,
+            'activeunit': activeunit,
             'user': request.user,
             'moduleinfo': moduleinfo,
             'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,

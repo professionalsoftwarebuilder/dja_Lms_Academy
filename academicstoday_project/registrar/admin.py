@@ -29,7 +29,7 @@ from registrar.models import TrueFalseSubmission
 from registrar.models import ResponseQuestion
 from registrar.models import ResponseSubmission
 from registrar.models import PeerReview
-from registrar.models import Module
+from registrar.models import Module, LearningUnit
 
 admin.site.register(FileUpload)
 admin.site.register(Course)
@@ -58,15 +58,24 @@ admin.site.register(TrueFalseSubmission)
 admin.site.register(ResponseQuestion)
 admin.site.register(ResponseSubmission)
 
+
 class CourseInline(admin.TabularInline):
     model = Course.modules.through
     extra = 1
 
-
 class ModuleAdmin(admin.ModelAdmin):
     inlines = [CourseInline]
 
+class ModuleInline(admin.TabularInline):
+    model = LearningUnit.module.through
+    extra = 1
+
+
+class UnitAdmin(admin.ModelAdmin):
+    inlines = [ModuleInline]
+
 
 admin.site.register(Module, ModuleAdmin)
+admin.site.register(LearningUnit, UnitAdmin)
 
 

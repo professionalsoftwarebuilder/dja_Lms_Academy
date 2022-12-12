@@ -736,9 +736,12 @@ class CourseDiscussionThread(models.Model):
 
 
 class LearningUnit(models.Model):
-    module = models.ManyToManyField(Module, blank=True, through='TstUnitModule')
+    module = models.ManyToManyField(Module, blank=True, through='TstUnitModule', related_name='learningunits')
     title = models.CharField(max_length=120, blank=False, null=True,)
     content = RichTextField(config_name='basic_ckeditor', blank=True, null=True)
+
+    def __str__(self):
+        return self.title
 
 
 class TstUnitModule(models.Model):

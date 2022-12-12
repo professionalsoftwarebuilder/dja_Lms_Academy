@@ -35,7 +35,7 @@ urlpatterns = [
     #$# 010 add 2
     # Module
     path('course/<course_id>/modules', lecture.modules_page, name='modules'),
-    path('course/<module_id>/<course_id>/module', lecture.module, name='module'),
+    path('course/<module_id>/<course_id>/<unit_id>/module', lecture.module, name='module'),
 
     # Lecture Notes
     path('course/<course_id>/lecture/(\d+)/notes', lecture_note.lecture_notes_page),

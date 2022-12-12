@@ -3,13 +3,22 @@
 
 {% block include %}
 
-    <div class="" id="module_modal" >
-        <div class="">
+    <div class="" >
             <h4>Module #{{ moduleinfo.volgnr }}:&nbsp;{{ moduleinfo.section }}&nbsp;-&nbsp;-&nbsp;{{ module.title }}</h4>
-            {% for unit in units %}
-            <p>{{ unit.title }}</p>
-            {% endfor %}
-        </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <ul>
+                    {% for unit in units.all %}
+                        <li><a href="{% url 'student:module' module.id course.id unit.id %}">{{ unit.title }}</a></li>
+                    {% empty %}
+                        <h3>No objects in list</h3>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-10" style="height: 450px; border-top: 1px solid black; border-left: 1px solid black">
+                    {{ activeunit.content|safe }}
+                </div>
+            </div>
     </div>
 
 {% endblock include %}
