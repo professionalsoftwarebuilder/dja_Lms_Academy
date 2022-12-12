@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -732,4 +733,17 @@ class CourseDiscussionThread(models.Model):
         for post in self.posts.all():
             post.delete()
         super(CourseDiscussionThread, self).delete(*args, **kwargs)
+
+
+class LearningUnit(models.Model):
+    module = models.ManyToManyField(Module, blank=True, through='TstUnitModule')
+    title = models.CharField(max_length=120, blank=False, null=True,)
+    content = RichTextField(config_name='basic_ckeditor', blank=True, null=True)
+
+
+class TstUnitModule(models.Model):
+    unit = models.ForeignKey(LearningUnit, on_delete=models.CASCADE, related_name='unit_modules', blank=True, null=True)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, related_name='module_units', blank=True, null=True)
+    serialnr = models.IntegerField('Serial number', blank=True, null=True, default=1, help_text='Sequece of unit in module')
+    section = models.CharField('Section', max_length=45, blank=True, null=True, default='pargr.', help_text='Section (number) of module in course')
 

@@ -180,8 +180,8 @@ academicstoday_project/academicstoday_project/.env
 coverage.txt
 
 # Do not share your `sqlite3` database related files.
-academicstoday_project/db.sqlite3
-academicstoday_project/db.sqlite3-journal
+# academicstoday_project/db.sqlite3
+# academicstoday_project/db.sqlite3-journal
 
 # Do not share your 'django-haystack' related files.
 academicstoday_project/academicstoday_project/whoosh_index

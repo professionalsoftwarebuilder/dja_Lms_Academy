@@ -104,7 +104,7 @@ TEMPLATES = [
     },
 ]
 
-#WSGI_APPLICATION = 'academicstoday_project.wsgi.application'
+WSGI_APPLICATION = 'academicstoday_project.wsgi.application'
 #WSGI_APPLICATION = 'wsgi.application'
 
 
@@ -172,8 +172,8 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static_hub"),
-    os.path.join(BASE_DIR, "media_hub"),
+    os.path.join(BASE_DIR, "static_code"),
+    os.path.join(BASE_DIR, "media_code"),
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")

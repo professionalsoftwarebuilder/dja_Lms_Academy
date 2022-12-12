@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-from registrar.models import Course, Module, TstCourseModule
+from registrar.models import Course, Module, TstCourseModule, LearningUnit
 from registrar.models import Lecture
 import json
 import datetime
@@ -67,12 +67,14 @@ def module(request, module_id, course_id):
         print('in get, ' + str(module_id))
         try:
             module = Module.objects.get(pk=module_id)
+            units = module.module_units.get(course=course_id)
             moduleinfo = module.module_courses.get(course=course_id)
         except Module.DoesNotExist:
             module = None
         return render(request, 'course/module/details.html',{
             'course': course,
             'module': module,
+            'units': units,
             'user': request.user,
             'moduleinfo': moduleinfo,
             'HAS_ADVERTISMENT': settings.APPLICATION_HAS_ADVERTISMENT,

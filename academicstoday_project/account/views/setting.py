@@ -32,13 +32,13 @@ def update_password(request):
             
             # Validate password.
             if request.user.check_password(old_password) == False:
-                response_data = {'status' : 'failure', 'message' : 'invalid old password' }
+                response_data = {'status': 'failure', 'message': 'invalid old password' }
                 return HttpResponse(json.dumps(response_data), content_type="application/json")
-            if password is '' or request is '':
-                response_data = {'status' : 'failure', 'message' : 'blank passwords are not acceptable' }
+            if password == '' or request == '':
+                response_data = {'status': 'failure', 'message': 'blank passwords are not acceptable' }
                 return HttpResponse(json.dumps(response_data), content_type="application/json")
             if password != repeat_password:
-                response_data = {'status' : 'failure', 'message' : 'passwords do not match' }
+                response_data = {'status': 'failure', 'message': 'passwords do not match' }
                 return HttpResponse(json.dumps(response_data), content_type="application/json")
         
             # Update model
