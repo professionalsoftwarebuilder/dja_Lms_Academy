@@ -193,11 +193,11 @@ prod_*.csv
 private_notes.txt
 
 # Do not share collected static files.
-academicstoday_project/static
-academicstoday_project/staticfiles
+media/
+static/
 
 academicstoday-env/
 *.cfg
-academicstoday_project/academicstoday_project/secret_settings.py
+secret_settings.py
 
 
