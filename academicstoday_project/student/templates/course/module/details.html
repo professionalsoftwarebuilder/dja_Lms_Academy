@@ -9,7 +9,15 @@
                 <div class="col-md-2">
                     <ul>
                     {% for unit in units.all %}
+                        {% if unit.id ==  activeunit.id %}
+                        <li>
+                            <a href="{% url 'student:module' module.id course.id unit.id %}">
+                                <i class="fa fa-arrow-right"></i>
+                                <b>{{ unit.title }}</b></a>
+                        </li>
+                        {% else %}
                         <li><a href="{% url 'student:module' module.id course.id unit.id %}">{{ unit.title }}</a></li>
+                        {% endif %}
                     {% empty %}
                         <h3>No objects in list</h3>
                     {% endfor %}

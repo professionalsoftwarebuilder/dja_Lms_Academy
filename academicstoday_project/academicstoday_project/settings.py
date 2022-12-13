@@ -66,6 +66,7 @@ INSTALLED_APPS = (
     'student',
     'teacher',
     'ckeditor',
+    'ckeditor_uploader',
     'publisher',
     'theBasis',
     'embed_video',
@@ -188,3 +189,21 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+CKEDITOR_UPLOAD_PATH = "ckeditor/"
+
+CKEDITOR_CONFIGS = {
+    'total': {
+        'toolbar': 'full',
+    },
+    'default': {
+            'toolbar': 'Custom',
+            'toolbar_Custom': [
+                ['Bold', 'Italic', 'Underline'],
+                ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+                ['Link', 'Unlink'],
+                ['RemoveFormat', 'Source']
+            ]
+        }
+}
+
+CKEDITOR_BROWSE_SHOW_DIRS = True

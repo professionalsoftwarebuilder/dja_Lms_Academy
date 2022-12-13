@@ -1,4 +1,5 @@
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
@@ -738,7 +739,7 @@ class CourseDiscussionThread(models.Model):
 class LearningUnit(models.Model):
     module = models.ManyToManyField(Module, blank=True, through='TstUnitModule', related_name='learningunits')
     title = models.CharField(max_length=120, blank=False, null=True,)
-    content = RichTextField(config_name='basic_ckeditor', blank=True, null=True)
+    content = RichTextUploadingField(config_name='total', blank=True, null=True)
 
     def __str__(self):
         return self.title

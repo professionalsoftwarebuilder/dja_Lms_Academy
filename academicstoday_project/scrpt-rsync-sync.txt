@@ -21,8 +21,10 @@ EXCLUDES="$SOURCE$EXCLUDESFILE"
   --delete -r \
   --exclude-from=$EXCLUDES \
   $SOURCE $DESTINATION
- 
- 
+
+# Dit plaatsen onder rsync -uavP om te kijken of niet het verkeerde gewist wordt
+#  --dry-run \
+
 # Origineel 
 #rsync -avx -e 'ssh -p22' \
 # --rsync-path="$RSYNC" \
