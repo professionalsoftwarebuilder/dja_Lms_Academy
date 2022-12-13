@@ -68,8 +68,11 @@ INSTALLED_APPS = (
     'ckeditor',
     'ckeditor_uploader',
     'publisher',
+    'constance',
     'theBasis',
     'embed_video',
+    'constance.backends.database',
+
 )
 
 MIDDLEWARE = (
@@ -100,6 +103,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'constance.context_processors.config',
             ],
         },
     },
@@ -207,3 +211,5 @@ CKEDITOR_CONFIGS = {
 }
 
 CKEDITOR_BROWSE_SHOW_DIRS = True
+
+from .constance import *
