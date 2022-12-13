@@ -1,0 +1,43 @@
+<!--Let op: deze file wordt niet gebruikt
+Aangemaakt maar oplosing niet doorgezet-->
+
+{% load static %}
+
+{% block intermediate %}
+
+    <!-- Navigation -->
+    {% include "course/nav.html" %}
+
+    <!-- Scripts -->
+    {% csrf_token %}
+    {% include "course/script.html" %}
+
+    <!-- MAIN -->
+    <div id="page-wrapper" style="min-height: 564px;">
+        <div class="container-fluid">
+            {% if HAS_ADVERTISMENT %}
+            <!-- Ads -->
+            <br/>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div style="text-align: center;">
+                        <iframe data-aa="68197"
+                            src="https://ad.a-ads.com/68197?size=320x50"
+                            scrolling="no"
+                            style="width:320px; height:50px; border:0px; padding:0;overflow:hidden;"
+                            allowtransparency="true"
+                            frameborder="0">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            <!-- /.Ads-->
+            {% endif %}
+
+            <!-- Content -->
+            {% block content %}
+            {% endblock %}
+            <!-- /.Content -->
+        </div><!-- /.container-fluid -->
+    </div>
+{% endblock intermediate %}

@@ -1,7 +1,12 @@
-{% extends 'course/module/view.html' %}
+{% extends 'course/base.html' %}
 {% load static %}
 
-{% block include %}
+{% comment %}
+{% extends 'course/module/view.html' %}
+{% endcomment %}
+
+
+{% block content %}
 
     <div class="" >
             <h4>Module #{{ moduleinfo.volgnr }}:&nbsp;{{ moduleinfo.section }}&nbsp;-&nbsp;-&nbsp;{{ module.title }}</h4>
@@ -29,5 +34,5 @@
             </div>
     </div>
 
-{% endblock include %}
+{% endblock  %}
 
