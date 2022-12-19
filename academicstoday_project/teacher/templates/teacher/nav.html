@@ -57,6 +57,9 @@
                 <li {% if tab == 'lectures' %}class="active"{% endif %}>
                     <a href="/teacher/course/{{ course.id }}/lectures"><i class="fa fa-fw fa-video-camera"></i> Lectures</a>
                 </li>
+                <li {% if tab == 'modules' %}class="active"{% endif %}>
+                    <a href="{% url 'teachers:modules' course.id %}"><i class="fa fa-fw fa-tasks"></i> Modules</a>
+                </li>
                 <li {% if tab == 'assignments' %}class="active"{% endif %}>
                     <a href="/teacher/course/{{ course.id }}/assignments"><i class="fa fa-fw fa-book"></i> Assignments</a>
                 </li>

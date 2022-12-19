@@ -197,6 +197,10 @@ CKEDITOR_UPLOAD_PATH = "ckeditor/"
 
 CKEDITOR_CONFIGS = {
     'total': {
+        'autoGrow_onStartup': True,
+        'autoGrow_minHeight': 100,
+        'autoGrow_maxHeight': 950,
+        'extraPlugins': 'autogrow',
         'toolbar': 'full',
     },
     'default': {
