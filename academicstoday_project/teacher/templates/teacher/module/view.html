@@ -41,4 +41,108 @@
     }
 </script>
 
+<!-- Modal -->
+<div id="ajax_module_modal"
+   name="ajax_module_modal"></div>
+<!-- end modal -->
+
+<script>
+    /**
+     * When the page loads up, get the table data.
+     */
+    $(document).ready(function(){
+        ajax_refresh_modules_table();
+    });
+
+    function ajax_refresh_modules_table()
+    {
+        $.ajax( 'modules_table', {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            type: 'post',
+            success: function(result) {
+               // success code execution here
+               $('#ajax_module_table').html(result); // Update UI.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    /**
+     *  Function will call AJAX function to load the modal for the new module
+     *  creation UI.
+     */
+    function ajax_module_modal(module_id)
+    {
+        if (module_id == 0)
+        {
+            $('#add_module_btn').prop("disabled", true); // Lock button
+        }
+        else
+        {
+            $('#edit_'+module_id+'_btn').prop("disabled", true); // Lock button
+        }
+        $.ajax( 'module_modal', {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'module_id': module_id
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                $('#ajax_module_modal').html(result); // Update UI.
+                $('#module_modal').modal();           // Unhide view.
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+    /**
+     *  Function will call AJAX function to delete the teacher's module.
+     */
+    function ajax_delete_module(module_id)
+    {
+        $('#del_'+module_id+'_btn').prop("disabled", true); // Lock button
+        $.ajax( 'delete_module', {
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'module_id' : module_id
+            },
+            type: 'post',
+            success: function(result) {
+                // success code execution here
+                $('#del_'+module_id+'_btn').prop("disabled", false); // Unlock button
+                if (result.status == 'success')
+                {
+                    ajax_refresh_modules_table();
+                }
+            },
+            error: function(xhr,status,error) {
+                // error code here
+            },
+            complete: function(xhr,status) {
+               // completion code here
+            }
+        });
+    }
+
+   function view_module_notes(module_id)
+   {
+       $('#notes_'+module_id+'_btn').prop("disabled", true); // Lock button
+       window.location = '/teacher/course/'+{{ course.id }}+'/module/'+module_id+'/notes';
+   }
+</script>
+
+
 {% endblock content %}

@@ -162,7 +162,7 @@ class Course(models.Model):
     status = models.PositiveSmallIntegerField(default=settings.COURSE_UNAVAILABLE_STATUS, choices=StatusChoices.choices)
     image = models.ImageField(upload_to='uploads', null=True, blank=True)
     students = models.ManyToManyField(Student)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ManyToManyField(Teacher, blank=False)
     modules = models.ManyToManyField(Module, through='TstCourseModule')
 
     def delete(self, *args, **kwargs):

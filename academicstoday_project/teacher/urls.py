@@ -133,4 +133,6 @@ urlpatterns = [
     # Module
     path('teacher/course/<course_id>/modules', lecture.modules_page, name='modules'),
     path('teacher/course/<module_id>/<course_id>/<unit_id>/module', lecture.module, name='module'),
+    path('teacher/course/<course_id>/module_modal', lecture.module_modal, name='module_modal'),
+
 ]

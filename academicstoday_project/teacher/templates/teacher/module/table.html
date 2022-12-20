@@ -15,17 +15,24 @@
                 <table class="table table-hover table-striped">
                     <thead>
                         <tr>
-                            <th>Week #</th>
-                            <th>Module #</th>
                             <th>Title</th>
-                            <th>Watch</th>
+                            <th>View</th>
+                            <th>
+                                <a href="{% url 'teachers:module_modal' course.id %}">
+                                <button
+                                           id="add_module_btn"
+                                         name="add_module_btn"
+                                         type="button"
+                                        class="btn btn-sm btn-success">
+                                    <i class="fa fa-plus"></i> Add
+                                </button>
+                                    </a>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for module in modules %}
                         <tr>
-                            <td> module feld 1 </td>
-                            <td> module veld 2 }}</td>
                             <td>{{ module.title }}</td>
                             <td>
                                <a href="{% url 'teachers:module' module.id course.id 0 %}">
@@ -34,6 +41,22 @@
                                     <i class="fa fa-file"></i> Begin
                                </button>
                                </a>
+                            </td>
+                            <td>
+                                 <button onclick="ajax_module_modal({{ module.module_id }});"
+                                               id="edit_{{ module.module_id }}_btn"
+                                             name="edit_{{ module.module_id }}_btn"
+                                             type="button"
+                                            class="btn btn-sm btn-warning">
+                                      <i class="fa fa-pencil"></i> Edit
+                                  </button>
+                                  <button onclick="ajax_delete_module({{ module.module_id }});"
+                                               id="del_{{ module.module_id }}_btn"
+                                             name="del_{{ module.module_id }}_btn"
+                                             type="button"
+                                            class="btn btn-sm btn-danger">
+                                       <i class="fa fa-minus"></i> Delete
+                                  </button>
                             </td>
                         </tr>
                         {% endfor %}

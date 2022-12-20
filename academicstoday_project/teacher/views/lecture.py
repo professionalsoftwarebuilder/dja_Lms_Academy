@@ -10,7 +10,7 @@ from registrar.models import Teacher, Module, LearningUnit
 from registrar.models import Student
 from registrar.models import Course
 from registrar.models import Lecture
-from teacher.forms import LectureForm
+from teacher.forms import LectureForm, ModuleForm
 
 
 @login_required(login_url='/landpage')
@@ -179,5 +179,21 @@ def module(request, module_id, course_id, unit_id, ):
         'local_js_urls' : settings.SB_ADMIN_2_JS_LIBRARY_URLS,
     })
 
+
+@login_required(login_url='/landpage')
+def module_modal(request, course_id):
+    #if request.method == u'POST':
+    # Get the lecture_id of post and either create a brand new form
+    # for the user, or load up existing one based on the database
+    # data for the particular lecture.
+    module_id = int(request.POST.get('module_id', 0))
+    form = None
+    if module_id > 0:
+        theModule = Module.objects.get(module_id=module_id)
+        form = ModuleForm(instance=theModule)
+    else:
+        form = ModuleForm()
+
+    return render(request, 'teacher/module/modal.html', {'form': form, })
 
 
