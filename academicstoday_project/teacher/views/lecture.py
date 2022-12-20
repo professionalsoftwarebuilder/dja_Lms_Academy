@@ -197,3 +197,29 @@ def module_modal(request, course_id):
     return render(request, 'teacher/module/modal.html', {'form': form, })
 
 
+
+@login_required(login_url='/landpage')
+def save_module(request, course_id):
+    response_data = {'status' : 'failed', 'message' : 'unknown error with saving'}
+    if request.is_ajax():
+        if request.method == 'POST':
+            course = Course.objects.get(id=course_id)
+            module_id = int(request.POST['module_id'])
+            form = None
+
+            # If lecture already exists, then lets update only, else insert.
+            if module_id > 0:
+                lecture = Lecture.objects.get(module_id=module_id)
+                form = ModuleForm(instance=module, data=request.POST)
+            else:
+                form = ModuleForm(request.POST, request.FILES)
+
+            if form.is_valid():
+                instance = form.save(commit=False)
+                instance.course = course
+                instance.save()
+                response_data = {'status' : 'success', 'message' : 'saved'}
+            else:
+                response_data = {'status' : 'failed', 'message' : json.dumps(form.errors)}
+    return HttpResponse(json.dumps(response_data), content_type="application/json")
+
