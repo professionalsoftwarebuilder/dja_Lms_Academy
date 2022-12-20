@@ -68,8 +68,11 @@ INSTALLED_APPS = (
     'ckeditor',
     'ckeditor_uploader',
     'publisher',
+    'constance',
     'theBasis',
     'embed_video',
+    'constance.backends.database',
+
 )
 
 MIDDLEWARE = (
@@ -100,6 +103,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'constance.context_processors.config',
             ],
         },
     },
@@ -193,6 +197,10 @@ CKEDITOR_UPLOAD_PATH = "ckeditor/"
 
 CKEDITOR_CONFIGS = {
     'total': {
+        'autoGrow_onStartup': True,
+        'autoGrow_minHeight': 100,
+        'autoGrow_maxHeight': 950,
+        'extraPlugins': 'autogrow',
         'toolbar': 'full',
     },
     'default': {
@@ -207,3 +215,5 @@ CKEDITOR_CONFIGS = {
 }
 
 CKEDITOR_BROWSE_SHOW_DIRS = True
+
+from .constance import *

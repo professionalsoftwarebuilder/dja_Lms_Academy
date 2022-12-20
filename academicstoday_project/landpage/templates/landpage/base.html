@@ -16,7 +16,7 @@
         <link rel="apple-touch-icon" sizes="144x144" href="{% static "img/apple-touch-icon-144x144.png" %}">
         <meta name="msvalidate.01" content="0D845C735BD4C19611239D1FDD802C63" />
         <meta name='yandex-verification' content='7db7d6658b4bc2a7' />
-        <title>Academics Today</title>
+        <title>{{ config.SITE_TITLE }}</title>
         
         {% for local_css_url in local_css_urls %}
             <link rel="stylesheet" href="{% static local_css_url %}">

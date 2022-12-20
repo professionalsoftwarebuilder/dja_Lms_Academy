@@ -2,7 +2,7 @@ from django.db import models
 from django import forms
 from django.forms.widgets import Select, SelectDateWidget
 from django.conf import settings
-from django.forms import ModelForm, Textarea, TextInput, NumberInput
+from django.forms import ModelForm, Textarea, TextInput, NumberInput, inlineformset_factory
 from django.forms.widgets import Select, SelectDateWidget
 from registrar.models import FileUpload
 from registrar.models import Announcement
@@ -16,6 +16,7 @@ from registrar.models import TrueFalseQuestion
 from registrar.models import ResponseQuestion
 from registrar.models import Quiz
 from registrar.models import Exam
+from registrar.models import Module, TstCourseModule
 
 
 class AnnouncementForm(forms.ModelForm):
@@ -285,3 +286,29 @@ class ExamForm(forms.ModelForm):
             'due_date': SelectDateWidget(),
             'worth': Select(attrs={'class': u'form-control'}),
         }
+
+
+class ModuleForm(forms.ModelForm):
+    class Meta:
+        model = Module
+        fields = ['title', ]
+        labels = {
+            'title': 'Title',
+        }
+        widgets = {
+            'title': TextInput(attrs={'class': u'form-control', 'placeholder': u'Enter Title'}),
+        }
+
+
+class TstCourseModuleForm(forms.ModelForm):
+    class Meta:
+        model = TstCourseModule
+        fields = '__all__'
+
+
+ModuleGegInlineFormset = inlineformset_factory(
+    Module,
+    TstCourseModule,
+    form=TstCourseModuleForm,
+    extra=1,
+)

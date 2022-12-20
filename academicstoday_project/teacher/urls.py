@@ -16,6 +16,8 @@ from teacher.views import discussion
 from teacher.views import peer_review
 from teacher.views import setting
 
+app_name = 'teachers'
+
 urlpatterns = [
     # Syllabus
     path('teacher/course/<course_id>/overview', overview.overview_page),
@@ -126,4 +128,11 @@ urlpatterns = [
     # Settings
     path('teacher/course/<course_id>/settings', setting.settings_page),
     path('teacher/course/<course_id>/suspend_course', setting.suspend_course),
+
+    # $# 010 add 2
+    # Module
+    path('teacher/course/<course_id>/modules', lecture.modules_page, name='modules'),
+    path('teacher/course/<module_id>/<course_id>/<unit_id>/module', lecture.module, name='module'),
+    path('teacher/course/<course_id>/module_modal', lecture.module_modal, name='module_modal'),
+
 ]

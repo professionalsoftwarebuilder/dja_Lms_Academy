@@ -59,7 +59,7 @@ def modules_page(request, course_id):
 
 
 @login_required(login_url='/landpage')
-def module(request, module_id, course_id, unit_id):
+def module(request, module_id, course_id, unit_id, ):
     if unit_id == None:
         #unit_id =
         pass
@@ -71,7 +71,7 @@ def module(request, module_id, course_id, unit_id):
         try:
             module = Module.objects.get(pk=module_id)
             #units = module.module_units.filter(module=module_id)
-            units = module.learningunits
+            units = module.learningunits.all().order_by('unit_modules__serialnr')
 
             if unit_id == '0':
                 activeunit = units.first()
